@@ -25,6 +25,8 @@ jobs:
         for repo in buf_01 pth_03; do
           gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}";
         done;
+      env:
+        GH_TOKEN: ${{ github.token }}
 
     - name: Debug
       run: |
