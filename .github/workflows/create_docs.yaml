@@ -22,8 +22,17 @@ jobs:
 
     - name: Clone repositories
       run: |
+        echo '{}' > "${{ runner.temp }}/tags.json";
         for repo in buf_01 pth_03; do
           gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
+          (
+            cd "${{ runner.temp }}/repos/${repo}";
+            for tag in $(git tag); do
+              if [ -n "$(git ls-tree "$tag" -- antora.yml)" ]; then
+                echo "$tag";
+              fi
+            done;
+          ) | jq --raw-input --arg repo "${repo}" '.$repo=[(inputs|split(" "))]';
         done;
       env:
         GH_TOKEN: ${{ github.token }}
