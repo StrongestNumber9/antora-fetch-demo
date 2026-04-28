@@ -3,6 +3,8 @@ on: [ push ]
 
 jobs:
   create_docs:
+    name: Create docs
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
 
