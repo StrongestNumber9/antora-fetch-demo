@@ -23,7 +23,7 @@ jobs:
     - name: Clone repositories
       run: |
         for repo in buf_01 pth_03; do
-          gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}";
+          gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
         done;
       env:
         GH_TOKEN: ${{ github.token }}
