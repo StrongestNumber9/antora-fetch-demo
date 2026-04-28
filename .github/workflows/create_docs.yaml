@@ -32,7 +32,7 @@ jobs:
                 echo "$tag";
               fi
             done;
-          ) | jq --raw-input --arg repo "${repo}" '.$repo=[(inputs|split(" "))]';
+          ) | jq --raw-input --arg repo "${repo}" '$repo=(inputs|split(" "))';
         done;
       env:
         GH_TOKEN: ${{ github.token }}
