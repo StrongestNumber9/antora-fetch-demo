@@ -30,7 +30,7 @@ jobs:
           (
             cd "${{ runner.temp }}/repos/${repo}";
             for tag in $(git tag); do
-              if [ -n "$(git ls-tree "${tag\" -- antora.yml)" ]; then
+              if [ -n "$(git ls-tree "${tag}" -- antora.yml)" ]; then
                 echo "${tag}";
               fi
             done;
