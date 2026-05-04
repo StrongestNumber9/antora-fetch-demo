@@ -32,6 +32,8 @@ jobs:
                 echo "${tag}";
               fi;
             done | jq -R . | jq -s . > "${{ runner.temp }}/tags.${repo}.json";
+            echo "${{ runner.temp }}/tags.${repo}.json";
+            jq '.' "${{ runner.temp }}/tags.${repo}.json";
           )
         done;
         jq '.' "${{ runner.temp }}/tags.*.json";
