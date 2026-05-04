@@ -22,6 +22,8 @@ jobs:
 
     - name: Clone repositories
       run: |
+        set -e;
+        set -x;
         echo '{}' > "${{ runner.temp }}/tags.json";
         for repo in buf_01 pth_03; do
           gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
@@ -32,7 +34,8 @@ jobs:
                 echo "$tag";
               fi
             done;
-          ) | jq --raw-input --arg repo "${repo}" '$repo=(inputs|split(" "))';
+          ) | jq --raw-input --arg repo "${repo}" '$repo=(inputs|split(" "))' "${{ runner.temp }}/tags.json" > "${{ runner.temp }}/tags.json.tmp";
+          mv -f -v "${{ runner.temp }}/tags.json.tmp" "${{ runner.temp }}/tags.json";
         done;
       env:
         GH_TOKEN: ${{ github.token }}
