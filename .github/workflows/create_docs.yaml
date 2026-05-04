@@ -33,7 +33,9 @@ jobs:
                 echo "${tag}";
               fi
             done;
-          ) | jq --raw-input --arg repo "${repo}" '$repo=(inputs|split(" "))' "${{ runner.temp }}/tags.json" > "${{ runner.temp }}/tags.json.tmp";
+          ) > tmp;
+          cat tmp;
+          cat tmp | jq --raw-input --arg repo "${repo}" '$repo=(inputs|split(" "))' "${{ runner.temp }}/tags.json" > "${{ runner.temp }}/tags.json.tmp";
           mv -f -v "${{ runner.temp }}/tags.json.tmp" "${{ runner.temp }}/tags.json";
         done;
         jq '.' "${{ runner.temp }}/tags.json";
