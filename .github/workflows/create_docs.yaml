@@ -25,18 +25,19 @@ jobs:
         set -e;
         set -x;
         echo '{}' > "${{ runner.temp }}/tags.json";
-        for repo in buf_01 pth_03; do
+        for repo in buf_01 pth_06; do
           gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
           (
             cd "${{ runner.temp }}/repos/${repo}";
             for tag in $(git tag); do
-              if [ -n "$(git ls-tree "$tag" -- antora.yml)" ]; then
-                echo "$tag";
+              if [ -n "$(git ls-tree "${tag\" -- antora.yml)" ]; then
+                echo "${tag}";
               fi
             done;
           ) | jq --raw-input --arg repo "${repo}" '$repo=(inputs|split(" "))' "${{ runner.temp }}/tags.json" > "${{ runner.temp }}/tags.json.tmp";
           mv -f -v "${{ runner.temp }}/tags.json.tmp" "${{ runner.temp }}/tags.json";
         done;
+        jq '.' "${{ runner.temp }}/tags.json";
       env:
         GH_TOKEN: ${{ github.token }}
 
