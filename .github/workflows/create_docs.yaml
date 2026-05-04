@@ -23,7 +23,6 @@ jobs:
     - name: Clone repositories
       run: |
         set -e;
-        set -x;
         echo '{}' > "${{ runner.temp }}/tags.json";
         for repo in buf_01 pth_06; do
           gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
