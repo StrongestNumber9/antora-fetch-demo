@@ -23,26 +23,21 @@ jobs:
     - name: Clone repositories
       run: |
         set -e;
-        echo '{}' > "${{ runner.temp }}/tags.json";
         for repo in buf_01 pth_06; do
           gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
           (
             cd "${{ runner.temp }}/repos/${repo}";
-            for tag in $(git tag); do
-              if [ -n "$(git ls-tree "${tag}" -- antora.yml)" ]; then
+            git tag | while read -r tag; do
+              if [ -n "$(git ls-tree --name-only "${tag}" "antora.yml")" ]; then
                 echo "${tag}";
-              fi
-            done;
-          ) > tmp;
-          cat tmp;
-          cat tmp | jq --raw-input --arg repo "${repo}" '$repo=(inputs|split(" "))' "${{ runner.temp }}/tags.json" > "${{ runner.temp }}/tags.json.tmp";
-          mv -f -v "${{ runner.temp }}/tags.json.tmp" "${{ runner.temp }}/tags.json";
+              fi;
+            done | jq -R . | jq -s . > "${{ runner.temp }}/tags.${repo}.json";
+          )
         done;
-        jq '.' "${{ runner.temp }}/tags.json";
+        jq '.' "${{ runner.temp }}/tags.*.json";
       env:
         GH_TOKEN: ${{ github.token }}
 
     - name: Debug
       run: |
-        find ~/.m2/;
         find "${{ runner.temp }}/repos/";
