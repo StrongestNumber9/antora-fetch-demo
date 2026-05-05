@@ -20,10 +20,10 @@ jobs:
         path: ~/.m2/repository
         key: always-m2
 
-    - name: Set up JDK 17
+    - name: Set up Java
       uses: actions/setup-java@v5
       with:
-        java-version: '17'
+        java-version: '25'
         distribution: 'temurin'
 
     - name: Install Antora
