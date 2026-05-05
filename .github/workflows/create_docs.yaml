@@ -49,6 +49,7 @@ jobs:
           )
         done;
         python create_antora_playbook.py > antora-playbook.yml;
+        cat antora-playbook.yml;
       env:
         GH_TOKEN: ${{ github.token }}
 
