@@ -8,12 +8,6 @@ jobs:
     steps:
     - uses: actions/checkout@v6
 
-    - name: Cache synced repositories
-      uses: actions/cache@v5
-      with:
-        path: ${{ runner.temp }}/repos
-        key: always-repos
-
     - name: Cache Local Maven Repository
       uses: actions/cache@v4
       with:
@@ -35,12 +29,9 @@ jobs:
         set -e;
         mkdir -p "${{ runner.temp }}/tags/";
         for repo in buf_01 pth_06; do
-          if [ ! -d "${{ runner.temp }}/repos/${repo}" ]; then
-            gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
-          fi;
+          gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
           (
             cd "${{ runner.temp }}/repos/${repo}";
-            gh repo sync;
             git tag | while read -r tag; do
               if [ -n "$(git ls-tree --name-only "${tag}" antora.yml)" ]; then
                 echo "${tag}";
