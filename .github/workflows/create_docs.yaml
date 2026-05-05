@@ -22,7 +22,7 @@ jobs:
 
     - name: Install Antora
       run: |
-        npm i -g @antora/cli@ @antora/site-generator @antora/collector-extension
+        npm i -g @antora/cli@ @antora/site-generator @antora/collector-extension;
 
     - name: Clone repositories and create playbook
       run: |
