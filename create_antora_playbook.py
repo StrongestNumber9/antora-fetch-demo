@@ -4,7 +4,7 @@ import glob
 import os
 from pathlib import Path
 
-stub = yaml.safe_load(open("antora-playbook.yml").read())
+stub = yaml.safe_load(open("antora-playbook-stub.yml").read())
 
 for tagfile in glob.glob(f"{os.getenv("RUNNER_TEMP")}/tags/*.json"):
     tags = json.loads(open(tagfile).read())

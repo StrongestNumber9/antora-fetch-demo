@@ -20,6 +20,16 @@ jobs:
         path: ${{ runner.temp }}/repos
         key: always-repos
 
+    - uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: **/node_modules
+        key: always-node_modules
+
+    - name: Install Antora
+      run: |
+        npm i -g @antora/cli@ @antora/site-generator @antora/collector-extension
+
     - name: Clone repositories
       run: |
         set -e;
@@ -33,14 +43,13 @@ jobs:
                 echo "${tag}";
               fi;
             done | jq -R . | jq -s . > "${{ runner.temp }}/tags/${repo}.json";
-            echo "${{ runner.temp }}/tags/${repo}.json";
-            jq '.' "${{ runner.temp }}/tags/${repo}.json";
           )
         done;
-        python create_antora_playbook.py;
+        python create_antora_playbook.py > antora-playbook.yml;
+        cat antora-playbook.yml;
       env:
         GH_TOKEN: ${{ github.token }}
 
-    - name: Debug
+    - name: Run Antora
       run: |
-        find "${{ runner.temp }}/repos/";
+        antora antora-playbook.yml --stacktrace
