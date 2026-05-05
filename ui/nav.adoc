@@ -1,2 +1,0 @@
-.Test
-* xref:modules/ROOT/index.html
