@@ -35,9 +35,12 @@ jobs:
         set -e;
         mkdir -p "${{ runner.temp }}/tags/";
         for repo in buf_01 pth_06; do
-          gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
+          if [ ! -d "${{ runner.temp }}/repos/${repo}" ]; then
+            gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
+          fi;
           (
             cd "${{ runner.temp }}/repos/${repo}";
+            gh repo sync;
             git tag | while read -r tag; do
               if [ -n "$(git ls-tree --name-only "${tag}" "antora.yml")" ]; then
                 echo "${tag}";
