@@ -1,2 +1,2 @@
-.Test
+.Testing
 * xref:modules/ROOT/index.html
