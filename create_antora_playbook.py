@@ -12,5 +12,4 @@ for tagfile in glob.glob(f"{runner_temp}/tags/*.json"):
     name = Path(tagfile).stem
     source = { "url": f"{runner_temp}/repos/{name}", "tags": tags, "branches": ["!*"] }
     stub["content"]["sources"].append(source)
-
 print(yaml.dump(stub))
