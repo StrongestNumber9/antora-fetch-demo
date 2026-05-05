@@ -23,6 +23,7 @@ jobs:
     - name: Clone repositories
       run: |
         set -e;
+        mkdir -p "${{ runner.temp }}/tags/";
         for repo in buf_01 pth_06; do
           gh repo clone "StrongestNumber9/${repo}" "${{ runner.temp }}/repos/${repo}" --no-upstream;
           (
@@ -31,12 +32,12 @@ jobs:
               if [ -n "$(git ls-tree --name-only "${tag}" "antora.yml")" ]; then
                 echo "${tag}";
               fi;
-            done | jq -R . | jq -s . > "${{ runner.temp }}/tags.${repo}.json";
-            echo "${{ runner.temp }}/tags.${repo}.json";
-            jq '.' "${{ runner.temp }}/tags.${repo}.json";
+            done | jq -R . | jq -s . > "${{ runner.temp }}/tags/${repo}.json";
+            echo "${{ runner.temp }}/tags/${repo}.json";
+            jq '.' "${{ runner.temp }}/tags/${repo}.json";
           )
         done;
-        jq '.' "${{ runner.temp }}/tags.*.json";
+        python create_antora_playbook.py;
       env:
         GH_TOKEN: ${{ github.token }}
 

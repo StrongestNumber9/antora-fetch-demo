@@ -1,0 +1,12 @@
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+content:
+  sources: []
+site:
+  title: Teragrep Docs
+  url: https://docs.teragrep.com
+antora:
+  extensions:
+  - '@antora/collector-extension'
